@@ -6,7 +6,7 @@
     height="150"
     width="300"
     alt="thy"
-    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAaVBMVEVHcEzmm5vUVVbikpPOP0HRSkzOODrONznNMzX21NTWYWLPPj/Zbm/JDRHJERPIDRHPQUPmqqrHAAHICg/////IBQrEAADKGRzLKCrYdHX9+fnqu7v24uLwz8/kpabhmZrTX2DRUlPdi4zOAklXAAAAEnRSTlMAIJIr/nOeuuALUNE8xKTilMbApUyVAAABH0lEQVQokXWS65aDIAyE8YKgtrYbCIhaq77/Qy7KRVnPzi/xO5MEMoREPWjVdRV9kJvqTgOiEIjYV3XKcjltCiwUO9f5lXFYpZSzAuGE/CxZglCbpYNRnkJZR589qslSOUbqvflRDMwO5SfSo2+m3Ukd8PTqzEKGHn4cXf1UyCzUoc4s08KakAYD/DooA8SGvP+H79gylh0iZOTpP+NAcVzxvMDBwR68LAxlj9e1WpQuF7PN4wqMVOk1vX00ArAi1EFlZND0LdW+PqSk1m4LftTRgAL3RtoupkUBzhcs/ibtHh1Qy5RYPDzC9DNM89XixdxC+9TifL1PQtHjnRUk0j9OOJmNWHvtiNimyW24jbMLNfLmlvmCMv56cUaz+OsXMEwu7v9Djl4AAAAASUVORK5CYII="
+    src="https://cdn.turkishairlines.com/m/65eb1aeefce2844b/original/Turkish-Airlines-Logo.png"
   />
 </a>
 
