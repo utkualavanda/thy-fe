@@ -157,6 +157,10 @@ export const SearchFlightPage = () => {
                 vertical: 'bottom',
                 horizontal: 'left',
               }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+              }}
             >
               <Stack sx={{ gap: 3, padding: 2 }}>
                 <Typography

@@ -3,8 +3,8 @@
 
 <a href="https://www.turkishairlines.com/">
   <img
-    height="150"
-    width="150"
+    height="120"
+    width="120"
     alt="thy"
     src="https://cdn.turkishairlines.com/m/65eb1aeefce2844b/original/Turkish-Airlines-Logo.png"
   />
@@ -51,3 +51,6 @@ In the provided JSON data, the departureDateTimeDisplay and arrivalDateTimeDispl
 
 Filtering Logic:
 Since json-server was used as the backend, it lacked support for advanced filtering. As a result, filtering could not be performed via backend API calls. Instead, the frontend fetches all data and performs filtering on the client side. While this approach works fine for small datasets, it may need optimization for larger ones.
+
+Search Input Case Sensitivity:
+On the Search Flight page, the 'From' and 'To' text fields are case-sensitive. No additional logic has been implemented for case insensitivity, so search inputs must exactly match the casing of the destination names in the data to return results.
