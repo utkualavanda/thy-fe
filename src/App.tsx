@@ -30,7 +30,7 @@ function App() {
       <GlobalStyles
         styles={{
           body: {
-            backgroundColor: '#f8f8f8',
+            backgroundColor: '#ffffff',
             boxSizing: 'border-box',
             margin: 0,
           },

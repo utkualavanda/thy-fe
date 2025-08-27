@@ -1,16 +1,34 @@
 import type { ThemeOptions } from '@mui/material';
 
+declare module '@mui/material/styles' {
+  interface Palette {
+    tertiary: Palette['primary'];
+    white: Palette['primary'];
+    slategray: Palette['primary'];
+  }
+  interface PaletteOptions {
+    tertiary?: PaletteOptions['primary'];
+    white?: PaletteOptions['primary'];
+    slategray?: PaletteOptions['primary'];
+  }
+}
+
 export const palette: ThemeOptions['palette'] = {
   mode: 'light',
   primary: {
+    main: '#2196f3',
+    light: '#64b5f6',
+    dark: '#1976d2',
+  },
+  secondary: {
     main: '#e81932',
     light: '#f14b60',
     dark: '#b01022',
   },
-  secondary: {
-    main: '#232b38',
-    light: '#3a4658',
-    dark: '#1a2029',
+  tertiary: {
+    main: '#063048',
+    light: '#1a5a7d',
+    dark: '#031c28',
   },
   error: {
     main: '#d32f2f',
@@ -31,5 +49,11 @@ export const palette: ThemeOptions['palette'] = {
   text: {
     primary: '#333',
     secondary: '#666',
+  },
+  white: {
+    main: '#ffffff',
+  },
+  slategray: {
+    main: '#606977',
   },
 };

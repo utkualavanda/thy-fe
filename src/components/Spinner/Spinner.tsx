@@ -11,7 +11,7 @@ export const Spinner = (props: CircularProgressProps) => {
     <Stack sx={{ alignItems: 'center' }}>
       <CircularProgress
         {...props}
-        sx={{ color: palette.primary.main, ...props.sx }}
+        sx={{ color: palette.secondary.main, ...props.sx }}
       />
     </Stack>
   );
