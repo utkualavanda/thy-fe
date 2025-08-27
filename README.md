@@ -4,7 +4,7 @@
 <a href="https://www.turkishairlines.com/">
   <img
     height="150"
-    width="300"
+    width="150"
     alt="thy"
     src="https://cdn.turkishairlines.com/m/65eb1aeefce2844b/original/Turkish-Airlines-Logo.png"
   />
