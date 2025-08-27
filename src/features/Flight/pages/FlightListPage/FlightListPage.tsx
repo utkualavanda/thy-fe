@@ -9,7 +9,7 @@ import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import DOMPurify from 'dompurify';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Spinner } from '../../../../components/Spinner/Spinner';
@@ -56,6 +56,17 @@ export const FlightListPage = () => {
       ? 'BUSINESS'
       : 'ECONOMY';
 
+  const memoizedShownFlights = useMemo(
+    () =>
+      flights.data?.filter((fligth) => {
+        return (
+          origin === fligth.originAirport.city.name &&
+          destination === fligth.destinationAirport.city.name
+        );
+      }) || [],
+    [flights.data]
+  );
+
   const getBrandPrice = (flight: Flight) => {
     const sub = flight.fareCategories[cabinType].subcategories.find(
       (s) => s.brandCode === 'ecoFly'
@@ -64,9 +75,9 @@ export const FlightListPage = () => {
   };
 
   useEffect(() => {
-    if (!flights.data?.length) return;
+    if (!memoizedShownFlights?.length) return;
 
-    const copiedFlightList = [...flights.data];
+    const copiedFlightList = [...memoizedShownFlights];
 
     if (selectedFlight) {
       setSelectedFlight(null);
@@ -92,7 +103,7 @@ export const FlightListPage = () => {
       setSortedFlightList(copiedFlightList);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [flights.data, sortBy]);
+  }, [memoizedShownFlights, sortBy]);
 
   const handleFlightSelect = ({
     selectedFlight,
@@ -113,6 +124,8 @@ export const FlightListPage = () => {
       }`,
     });
   };
+
+  if (!memoizedShownFlights.length) return;
 
   return (
     <>

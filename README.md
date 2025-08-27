@@ -41,7 +41,7 @@ yarn dev
 ```
 
 ```
-npx json-server --watch flights.json --port 3000
+npx json-server --watch db.json --port 3000
 ```
 
 ## Notes
