@@ -17,6 +17,7 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../../routes/routeNames';
 import { cabinTypes, type CabinType } from '../../constants/constants';
@@ -40,6 +41,7 @@ export const SearchFlightPage = () => {
 
   return (
     <>
+      <Helmet title="Uçuş Sorgulama" />
       <Stack
         sx={{
           height: '100vh',

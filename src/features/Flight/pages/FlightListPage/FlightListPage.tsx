@@ -10,6 +10,7 @@ import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import DOMPurify from 'dompurify';
 import { Fragment, useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Spinner } from '../../../../components/Spinner/Spinner';
 import { ROUTES } from '../../../../routes/routeNames';
@@ -114,559 +115,565 @@ export const FlightListPage = () => {
   };
 
   return (
-    <Stack sx={{ width: '80%', marginX: 'auto', marginTop: 10, gap: 4 }}>
-      <Box
-        sx={{
-          paddingY: 1,
-          paddingX: 10,
-          width: 'fit-content',
-          backgroundColor: palette.secondary.main,
-        }}
-      >
-        <Typography variant="body2" color={palette.white.main}>
-          Uçuş
-        </Typography>
-      </Box>
-      <Typography variant="h5">{`${origin} - ${destination}, ${passengerCount} Yolcu`}</Typography>
-      <Stack sx={{ gap: 3, flexDirection: 'row', alignItems: 'center' }}>
-        <Typography variant="body2">Promosyon Kodu</Typography>
-        <Switch
-          checked={isPromotionEnabled}
-          onChange={({ target: { checked } }) => {
-            setIsPromotionEnabled(checked);
-          }}
-        />
-      </Stack>
-      {isPromotionEnabled && (
-        <Stack sx={{ gap: 2 }}>
-          <Typography variant="caption">
-            Promosyon Kodu seçeneği ile tüm Economy kabini Eco Fly paketlerini
-            %50 indirimle satın alabilirsiniz!
-          </Typography>
-          <Typography variant="caption">
-            Promosyon Kodu seçeneği aktifken Eco Fly paketi haricinde seçim
-            yapılarmamaktadir.
-          </Typography>
-        </Stack>
-      )}
-      <Stack>
-        <Stack
+    <>
+      <Helmet title="Uçuş Listeleme" />
+      <Stack sx={{ width: '80%', marginX: 'auto', marginTop: 10, gap: 4 }}>
+        <Box
           sx={{
-            gap: 2,
-            padding: 2,
-            alignItems: 'center',
-            flexDirection: 'row',
-            borderTopLeftRadius: 2,
-            borderTopRightRadius: 2,
-            color: palette.white.main,
-            justifyContent: 'flex-end',
-            backgroundColor: palette.tertiary.dark,
+            paddingY: 1,
+            paddingX: 10,
+            width: 'fit-content',
+            backgroundColor: palette.secondary.main,
           }}
         >
-          <Typography variant="caption">Sıralama Kriteri</Typography>
-          <Typography
-            variant="caption"
-            sx={{
-              border: `1px solid ${palette.white.main}`,
-              paddingY: 0.25,
-              paddingX: 3,
-              borderRadius: 1,
-              ...(sortBy === 'eco-fly'
-                ? { pointerEvents: 'none' }
-                : {
-                    cursor: 'pointer',
-                  }),
-            }}
-            onClick={() => {
-              setSortBy('eco-fly');
-            }}
-          >
-            Ekonomi Kabin Ücreti
+          <Typography variant="body2" color={palette.white.main}>
+            Uçuş
           </Typography>
-          <Typography
-            variant="caption"
-            sx={{
-              border: `1px solid ${palette.white.main}`,
-              paddingY: 0.25,
-              paddingX: 3,
-              borderRadius: 1,
-              ...(sortBy === 'departure-time'
-                ? { pointerEvents: 'none' }
-                : {
-                    cursor: 'pointer',
-                  }),
+        </Box>
+        <Typography variant="h5">{`${origin} - ${destination}, ${passengerCount} Yolcu`}</Typography>
+        <Stack sx={{ gap: 3, flexDirection: 'row', alignItems: 'center' }}>
+          <Typography variant="body2">Promosyon Kodu</Typography>
+          <Switch
+            checked={isPromotionEnabled}
+            onChange={({ target: { checked } }) => {
+              setIsPromotionEnabled(checked);
             }}
-            onClick={() => {
-              setSortBy('departure-time');
-            }}
-          >
-            Kalkış Saati
-          </Typography>
+          />
         </Stack>
-        <Stack
-          sx={{
-            gap: 2,
-            padding: 4,
-            backgroundColor: palette.background.default,
-          }}
-        >
-          {flights.isLoading ? (
-            <Spinner />
-          ) : (
-            <>
-              {sortedFlightList.length > 0 &&
-                sortedFlightList.map((flight, index) => {
-                  const ecoFly = {
-                    BUSINESS: flight.fareCategories.BUSINESS.subcategories.find(
-                      (category) => category.brandCode === 'ecoFly'
-                    ),
-                    ECONOMY: flight.fareCategories.ECONOMY.subcategories.find(
-                      (category) => category.brandCode === 'ecoFly'
-                    ),
-                  };
-                  const extraFly = {
-                    BUSINESS: flight.fareCategories.BUSINESS.subcategories.find(
-                      (category) => category.brandCode === 'extraFly'
-                    ),
-                    ECONOMY: flight.fareCategories.ECONOMY.subcategories.find(
-                      (category) => category.brandCode === 'extraFly'
-                    ),
-                  };
-                  const primeFly = {
-                    BUSINESS: flight.fareCategories.BUSINESS.subcategories.find(
-                      (category) => category.brandCode === 'primeFly'
-                    ),
-                    ECONOMY: flight.fareCategories.ECONOMY.subcategories.find(
-                      (category) => category.brandCode === 'primeFly'
-                    ),
-                  };
-                  return (
-                    <Fragment key={flight.id}>
-                      <Stack
-                        sx={{
-                          gap: 3,
-                          flexDirection: { desktop: 'row', mobile: 'column' },
-                        }}
-                      >
+        {isPromotionEnabled && (
+          <Stack sx={{ gap: 2 }}>
+            <Typography variant="caption">
+              Promosyon Kodu seçeneği ile tüm Economy kabini Eco Fly paketlerini
+              %50 indirimle satın alabilirsiniz!
+            </Typography>
+            <Typography variant="caption">
+              Promosyon Kodu seçeneği aktifken Eco Fly paketi haricinde seçim
+              yapılarmamaktadir.
+            </Typography>
+          </Stack>
+        )}
+        <Stack>
+          <Stack
+            sx={{
+              gap: 2,
+              padding: 2,
+              alignItems: 'center',
+              flexDirection: 'row',
+              borderTopLeftRadius: 2,
+              borderTopRightRadius: 2,
+              color: palette.white.main,
+              justifyContent: 'flex-end',
+              backgroundColor: palette.tertiary.dark,
+            }}
+          >
+            <Typography variant="caption">Sıralama Kriteri</Typography>
+            <Typography
+              variant="caption"
+              sx={{
+                border: `1px solid ${palette.white.main}`,
+                paddingY: 0.25,
+                paddingX: 3,
+                borderRadius: 1,
+                ...(sortBy === 'eco-fly'
+                  ? { pointerEvents: 'none' }
+                  : {
+                      cursor: 'pointer',
+                    }),
+              }}
+              onClick={() => {
+                setSortBy('eco-fly');
+              }}
+            >
+              Ekonomi Kabin Ücreti
+            </Typography>
+            <Typography
+              variant="caption"
+              sx={{
+                border: `1px solid ${palette.white.main}`,
+                paddingY: 0.25,
+                paddingX: 3,
+                borderRadius: 1,
+                ...(sortBy === 'departure-time'
+                  ? { pointerEvents: 'none' }
+                  : {
+                      cursor: 'pointer',
+                    }),
+              }}
+              onClick={() => {
+                setSortBy('departure-time');
+              }}
+            >
+              Kalkış Saati
+            </Typography>
+          </Stack>
+          <Stack
+            sx={{
+              gap: 2,
+              padding: 4,
+              backgroundColor: palette.background.default,
+            }}
+          >
+            {flights.isLoading ? (
+              <Spinner />
+            ) : (
+              <>
+                {sortedFlightList.length > 0 &&
+                  sortedFlightList.map((flight, index) => {
+                    const ecoFly = {
+                      BUSINESS:
+                        flight.fareCategories.BUSINESS.subcategories.find(
+                          (category) => category.brandCode === 'ecoFly'
+                        ),
+                      ECONOMY: flight.fareCategories.ECONOMY.subcategories.find(
+                        (category) => category.brandCode === 'ecoFly'
+                      ),
+                    };
+                    const extraFly = {
+                      BUSINESS:
+                        flight.fareCategories.BUSINESS.subcategories.find(
+                          (category) => category.brandCode === 'extraFly'
+                        ),
+                      ECONOMY: flight.fareCategories.ECONOMY.subcategories.find(
+                        (category) => category.brandCode === 'extraFly'
+                      ),
+                    };
+                    const primeFly = {
+                      BUSINESS:
+                        flight.fareCategories.BUSINESS.subcategories.find(
+                          (category) => category.brandCode === 'primeFly'
+                        ),
+                      ECONOMY: flight.fareCategories.ECONOMY.subcategories.find(
+                        (category) => category.brandCode === 'primeFly'
+                      ),
+                    };
+                    return (
+                      <Fragment key={flight.id}>
                         <Stack
                           sx={{
-                            padding: 4,
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            gap: 10,
-                            flex: '1 1 calc(50% - 12px/3)',
-                            backgroundColor: palette.white.main,
+                            gap: 3,
+                            flexDirection: { desktop: 'row', mobile: 'column' },
                           }}
                         >
                           <Stack
                             sx={{
-                              gap: 1,
-                              width: '100%',
-                              alignItems: 'center',
-                              flexDirection: 'row',
-                            }}
-                          >
-                            <Stack sx={{ gap: 1 }}>
-                              <Typography variant="body1" fontWeight={600}>
-                                {flight.departureDateTimeDisplay}
-                              </Typography>
-                              <Stack>
-                                <Typography variant="caption">
-                                  {flight.originAirport.code}
-                                </Typography>
-                                <Typography variant="caption">
-                                  {flight.originAirport.city.name}
-                                </Typography>
-                              </Stack>
-                            </Stack>
-                            <div
-                              style={{
-                                display: 'inline-block',
-                                width: '100%',
-                                backgroundColor: palette.text.secondary,
-                                height: '2px',
-                              }}
-                            />
-                            <Stack sx={{ gap: 1, textAlign: 'right' }}>
-                              <Typography variant="body1" fontWeight={600}>
-                                {flight.arrivalDateTimeDisplay}
-                              </Typography>
-                              <Stack>
-                                <Typography variant="caption">
-                                  {flight.destinationAirport.code}
-                                </Typography>
-                                <Typography variant="caption">
-                                  {flight.destinationAirport.city.name}
-                                </Typography>
-                              </Stack>
-                            </Stack>
-                          </Stack>
-                          <Stack
-                            sx={{
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                            }}
-                          >
-                            <Typography
-                              variant="caption"
-                              sx={{ whiteSpace: 'nowrap' }}
-                            >
-                              Uçuş Süresi
-                            </Typography>
-                            <Typography variant="body1" fontWeight={600}>
-                              {flight.flightDuration}
-                            </Typography>
-                          </Stack>
-                        </Stack>
-                        {ecoFly['ECONOMY'] && (
-                          <Stack
-                            sx={{
-                              flex: '1 1 calc(25% - 12px/3)',
-                              cursor: 'pointer',
-                              padding: 3,
-                              boxShadow: '0 4px 8px 0 rgba(0,0,0,.05)',
-                              alignItems: 'center',
-                              flexDirection: 'row',
-                              justifyContent: 'space-between',
-                              backgroundColor: palette.white.main,
-                            }}
-                            onClick={() => {
-                              if (
-                                index === selectedFlight?.index &&
-                                selectedFlight?.cabinType === 'ECONOMY'
-                              ) {
-                                setSelectedFlight(null);
-                                return;
-                              }
-                              setSelectedFlight({
-                                cabinType: 'ECONOMY',
-                                index,
-                              });
-                            }}
-                          >
-                            <Stack
-                              sx={{
-                                gap: 2,
-                                alignItems: 'center',
-                                flexDirection: 'row',
-                              }}
-                            >
-                              <Radio
-                                checked={
-                                  selectedFlight?.index === index &&
-                                  selectedFlight?.cabinType === 'ECONOMY'
-                                }
-                              />
-                              <Typography>ECONOMY</Typography>
-                              <Stack sx={{ textAlign: 'start' }}>
-                                <Typography>Yolcu Başına</Typography>
-                                <Typography fontWeight={600}>
-                                  {ecoFly['ECONOMY'].price.currency +
-                                    ' ' +
-                                    (isPromotionEnabled
-                                      ? ecoFly['ECONOMY'].price.amount *
-                                        promotionRate
-                                      : ecoFly['ECONOMY'].price.amount)}
-                                </Typography>
-                              </Stack>
-                            </Stack>
-                            {index === selectedFlight?.index &&
-                            selectedFlight?.cabinType === 'ECONOMY' ? (
-                              <ExpandMoreIcon />
-                            ) : (
-                              <ExpandLessIcon />
-                            )}
-                          </Stack>
-                        )}
-                        {ecoFly['BUSINESS'] && (
-                          <Stack
-                            sx={{
-                              flex: '1 1 calc(25% - 12px/3)',
-                              cursor: 'pointer',
-                              padding: 3,
-                              boxShadow: '0 4px 8px 0 rgba(0,0,0,.05)',
-                              alignItems: 'center',
-                              flexDirection: 'row',
-                              justifyContent: 'space-between',
-                              backgroundColor: palette.white.main,
-                            }}
-                            onClick={() => {
-                              if (
-                                index === selectedFlight?.index &&
-                                selectedFlight?.cabinType === 'BUSINESS'
-                              ) {
-                                setSelectedFlight(null);
-                                return;
-                              }
-
-                              setSelectedFlight({
-                                cabinType: 'BUSINESS',
-                                index,
-                              });
-                            }}
-                          >
-                            <Stack
-                              sx={{
-                                gap: 2,
-                                alignItems: 'center',
-                                flexDirection: 'row',
-                              }}
-                            >
-                              <Radio
-                                checked={
-                                  selectedFlight?.index === index &&
-                                  selectedFlight?.cabinType === 'BUSINESS'
-                                }
-                              />
-                              <Typography>BUSINESS</Typography>
-                              <Stack sx={{ textAlign: 'start' }}>
-                                <Typography>Yolcu Başına</Typography>
-                                <Typography fontWeight={600}>
-                                  {ecoFly['BUSINESS']?.price.currency +
-                                    ' ' +
-                                    (isPromotionEnabled
-                                      ? ecoFly['BUSINESS']?.price.amount *
-                                        promotionRate
-                                      : ecoFly['BUSINESS']?.price.amount)}
-                                </Typography>
-                              </Stack>
-                            </Stack>
-                            {index === selectedFlight?.index &&
-                            selectedFlight?.cabinType === 'BUSINESS' ? (
-                              <ExpandMoreIcon />
-                            ) : (
-                              <ExpandLessIcon />
-                            )}
-                          </Stack>
-                        )}
-                      </Stack>
-                      <Collapse in={index === selectedFlight?.index}>
-                        {!!selectedFlight?.cabinType && (
-                          <Stack
-                            sx={{
-                              gap: 3,
                               padding: 4,
-                              flexDirection: {
-                                desktop: 'row',
-                                mobile: 'column',
-                              },
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              gap: 10,
+                              flex: '1 1 calc(50% - 12px/3)',
                               backgroundColor: palette.white.main,
                             }}
                           >
-                            <Stack sx={{ flex: 1 }}>
-                              <Stack
-                                sx={{
-                                  padding: '16px 8px 24px',
-                                  flexDirection: 'row',
-                                  justifyContent: 'space-between',
-                                  backgroundColor: palette.background.default,
-                                }}
-                              >
-                                <Typography fontWeight={600}>
-                                  Eco Fly
+                            <Stack
+                              sx={{
+                                gap: 1,
+                                width: '100%',
+                                alignItems: 'center',
+                                flexDirection: 'row',
+                              }}
+                            >
+                              <Stack sx={{ gap: 1 }}>
+                                <Typography variant="body1" fontWeight={600}>
+                                  {flight.departureDateTimeDisplay}
                                 </Typography>
-                                <Stack sx={{ gap: 1, flexDirection: 'row' }}>
+                                <Stack>
                                   <Typography variant="caption">
-                                    {
-                                      ecoFly[selectedFlight.cabinType]?.price
-                                        .currency
-                                    }
+                                    {flight.originAirport.code}
                                   </Typography>
-                                  <Typography fontWeight={600}>
-                                    {isPromotionEnabled &&
-                                    ecoFly[selectedFlight.cabinType]
-                                      ? Number(
-                                          ecoFly[selectedFlight.cabinType]
-                                            ?.price.amount
-                                        ) * promotionRate
-                                      : ecoFly[selectedFlight.cabinType]?.price
-                                          .amount}
+                                  <Typography variant="caption">
+                                    {flight.originAirport.city.name}
                                   </Typography>
                                 </Stack>
                               </Stack>
-                              <Box
-                                sx={{
-                                  border: `1px solid ${palette.text.disabled}`,
-                                  minHeight: '200px',
-                                  borderBottom: 'none',
+                              <div
+                                style={{
+                                  display: 'inline-block',
+                                  width: '100%',
+                                  backgroundColor: palette.text.secondary,
+                                  height: '2px',
                                 }}
-                              >
-                                {ecoFly[selectedFlight.cabinType]?.rights.map(
-                                  (right) => (
-                                    <Stack
-                                      key={right}
-                                      sx={{
-                                        padding: 2,
-                                        borderBottom: `1px solid ${palette.text.disabled}`,
-                                      }}
-                                    >
-                                      {right}
-                                    </Stack>
-                                  )
-                                )}
-                              </Box>
-                              <Button
-                                variant="contained"
-                                color="secondary"
-                                size="large"
-                                sx={{
-                                  borderRadius: 0,
-                                  textTransform: 'capitalize',
-                                }}
-                                onClick={() =>
-                                  handleFlightSelect({
-                                    selectedFlight,
-                                    brandCode: ecoFly,
-                                  })
-                                }
-                              >
-                                Uçuşu Seç
-                              </Button>
+                              />
+                              <Stack sx={{ gap: 1, textAlign: 'right' }}>
+                                <Typography variant="body1" fontWeight={600}>
+                                  {flight.arrivalDateTimeDisplay}
+                                </Typography>
+                                <Stack>
+                                  <Typography variant="caption">
+                                    {flight.destinationAirport.code}
+                                  </Typography>
+                                  <Typography variant="caption">
+                                    {flight.destinationAirport.city.name}
+                                  </Typography>
+                                </Stack>
+                              </Stack>
                             </Stack>
-                            <Stack sx={{ flex: 1 }}>
-                              <Stack
-                                sx={{
-                                  padding: '16px 8px 24px',
-                                  flexDirection: 'row',
-                                  justifyContent: 'space-between',
-                                  backgroundColor: palette.background.default,
-                                }}
+                            <Stack
+                              sx={{
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}
+                            >
+                              <Typography
+                                variant="caption"
+                                sx={{ whiteSpace: 'nowrap' }}
                               >
-                                <Typography fontWeight={600}>
-                                  Extra Fly
-                                </Typography>
-                                <Stack sx={{ gap: 1, flexDirection: 'row' }}>
-                                  <Typography variant="caption">
-                                    {
-                                      extraFly[selectedFlight.cabinType]?.price
-                                        .currency
-                                    }
-                                  </Typography>
-                                  <Typography fontWeight={600}>
-                                    {
-                                      extraFly[selectedFlight.cabinType]?.price
-                                        .amount
-                                    }
-                                  </Typography>
-                                </Stack>
-                              </Stack>
-                              <Box
-                                sx={{
-                                  border: `1px solid ${palette.text.disabled}`,
-                                  minHeight: '200px',
-                                  borderBottom: 'none',
-                                }}
-                              >
-                                {extraFly[selectedFlight.cabinType]?.rights.map(
-                                  (right) => (
-                                    <Stack
-                                      key={right}
-                                      sx={{
-                                        padding: 2,
-                                        borderBottom: `1px solid ${palette.text.disabled}`,
-                                      }}
-                                    >
-                                      {right}
-                                    </Stack>
-                                  )
-                                )}
-                              </Box>
-                              <Button
-                                variant="contained"
-                                color="secondary"
-                                size="large"
-                                sx={{
-                                  borderRadius: 0,
-                                  textTransform: 'capitalize',
-                                }}
-                                disabled={isPromotionEnabled}
-                                onClick={() => {
-                                  handleFlightSelect({
-                                    selectedFlight,
-                                    brandCode: extraFly,
-                                  });
-                                }}
-                              >
-                                Uçuşu Seç
-                              </Button>
-                            </Stack>
-                            <Stack sx={{ flex: 1 }}>
-                              <Stack
-                                sx={{
-                                  padding: '16px 8px 24px',
-                                  flexDirection: 'row',
-                                  justifyContent: 'space-between',
-                                  backgroundColor: palette.background.default,
-                                }}
-                              >
-                                <Typography fontWeight={600}>
-                                  Prime Fly
-                                </Typography>
-                                <Stack sx={{ gap: 1, flexDirection: 'row' }}>
-                                  <Typography variant="caption">
-                                    {
-                                      primeFly[selectedFlight.cabinType]?.price
-                                        .currency
-                                    }
-                                  </Typography>
-                                  <Typography fontWeight={600}>
-                                    {
-                                      primeFly[selectedFlight.cabinType]?.price
-                                        .amount
-                                    }
-                                  </Typography>
-                                </Stack>
-                              </Stack>
-                              <Box
-                                sx={{
-                                  border: `1px solid ${palette.text.disabled}`,
-                                  minHeight: '200px',
-                                  borderBottom: 'none',
-                                }}
-                              >
-                                {primeFly[selectedFlight.cabinType]?.rights.map(
-                                  (right) => (
-                                    <Stack
-                                      key={right}
-                                      sx={{
-                                        padding: 2,
-                                        borderBottom: `1px solid ${palette.text.disabled}`,
-                                      }}
-                                    >
-                                      {right}
-                                    </Stack>
-                                  )
-                                )}
-                              </Box>
-                              <Button
-                                variant="contained"
-                                color="secondary"
-                                size="large"
-                                sx={{
-                                  borderRadius: 0,
-                                  textTransform: 'capitalize',
-                                }}
-                                disabled={isPromotionEnabled}
-                                onClick={() => {
-                                  handleFlightSelect({
-                                    selectedFlight,
-                                    brandCode: primeFly,
-                                  });
-                                }}
-                              >
-                                Uçuşu Seç
-                              </Button>
+                                Uçuş Süresi
+                              </Typography>
+                              <Typography variant="body1" fontWeight={600}>
+                                {flight.flightDuration}
+                              </Typography>
                             </Stack>
                           </Stack>
-                        )}
-                      </Collapse>
-                    </Fragment>
-                  );
-                })}
-            </>
-          )}
+                          {ecoFly['ECONOMY'] && (
+                            <Stack
+                              sx={{
+                                flex: '1 1 calc(25% - 12px/3)',
+                                cursor: 'pointer',
+                                padding: 3,
+                                boxShadow: '0 4px 8px 0 rgba(0,0,0,.05)',
+                                alignItems: 'center',
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                backgroundColor: palette.white.main,
+                              }}
+                              onClick={() => {
+                                if (
+                                  index === selectedFlight?.index &&
+                                  selectedFlight?.cabinType === 'ECONOMY'
+                                ) {
+                                  setSelectedFlight(null);
+                                  return;
+                                }
+                                setSelectedFlight({
+                                  cabinType: 'ECONOMY',
+                                  index,
+                                });
+                              }}
+                            >
+                              <Stack
+                                sx={{
+                                  gap: 2,
+                                  alignItems: 'center',
+                                  flexDirection: 'row',
+                                }}
+                              >
+                                <Radio
+                                  checked={
+                                    selectedFlight?.index === index &&
+                                    selectedFlight?.cabinType === 'ECONOMY'
+                                  }
+                                />
+                                <Typography>ECONOMY</Typography>
+                                <Stack sx={{ textAlign: 'start' }}>
+                                  <Typography>Yolcu Başına</Typography>
+                                  <Typography fontWeight={600}>
+                                    {ecoFly['ECONOMY'].price.currency +
+                                      ' ' +
+                                      (isPromotionEnabled
+                                        ? ecoFly['ECONOMY'].price.amount *
+                                          promotionRate
+                                        : ecoFly['ECONOMY'].price.amount)}
+                                  </Typography>
+                                </Stack>
+                              </Stack>
+                              {index === selectedFlight?.index &&
+                              selectedFlight?.cabinType === 'ECONOMY' ? (
+                                <ExpandMoreIcon />
+                              ) : (
+                                <ExpandLessIcon />
+                              )}
+                            </Stack>
+                          )}
+                          {ecoFly['BUSINESS'] && (
+                            <Stack
+                              sx={{
+                                flex: '1 1 calc(25% - 12px/3)',
+                                cursor: 'pointer',
+                                padding: 3,
+                                boxShadow: '0 4px 8px 0 rgba(0,0,0,.05)',
+                                alignItems: 'center',
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                backgroundColor: palette.white.main,
+                              }}
+                              onClick={() => {
+                                if (
+                                  index === selectedFlight?.index &&
+                                  selectedFlight?.cabinType === 'BUSINESS'
+                                ) {
+                                  setSelectedFlight(null);
+                                  return;
+                                }
+
+                                setSelectedFlight({
+                                  cabinType: 'BUSINESS',
+                                  index,
+                                });
+                              }}
+                            >
+                              <Stack
+                                sx={{
+                                  gap: 2,
+                                  alignItems: 'center',
+                                  flexDirection: 'row',
+                                }}
+                              >
+                                <Radio
+                                  checked={
+                                    selectedFlight?.index === index &&
+                                    selectedFlight?.cabinType === 'BUSINESS'
+                                  }
+                                />
+                                <Typography>BUSINESS</Typography>
+                                <Stack sx={{ textAlign: 'start' }}>
+                                  <Typography>Yolcu Başına</Typography>
+                                  <Typography fontWeight={600}>
+                                    {ecoFly['BUSINESS']?.price.currency +
+                                      ' ' +
+                                      (isPromotionEnabled
+                                        ? ecoFly['BUSINESS']?.price.amount *
+                                          promotionRate
+                                        : ecoFly['BUSINESS']?.price.amount)}
+                                  </Typography>
+                                </Stack>
+                              </Stack>
+                              {index === selectedFlight?.index &&
+                              selectedFlight?.cabinType === 'BUSINESS' ? (
+                                <ExpandMoreIcon />
+                              ) : (
+                                <ExpandLessIcon />
+                              )}
+                            </Stack>
+                          )}
+                        </Stack>
+                        <Collapse in={index === selectedFlight?.index}>
+                          {!!selectedFlight?.cabinType && (
+                            <Stack
+                              sx={{
+                                gap: 3,
+                                padding: 4,
+                                flexDirection: {
+                                  desktop: 'row',
+                                  mobile: 'column',
+                                },
+                                backgroundColor: palette.white.main,
+                              }}
+                            >
+                              <Stack sx={{ flex: 1 }}>
+                                <Stack
+                                  sx={{
+                                    padding: '16px 8px 24px',
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    backgroundColor: palette.background.default,
+                                  }}
+                                >
+                                  <Typography fontWeight={600}>
+                                    Eco Fly
+                                  </Typography>
+                                  <Stack sx={{ gap: 1, flexDirection: 'row' }}>
+                                    <Typography variant="caption">
+                                      {
+                                        ecoFly[selectedFlight.cabinType]?.price
+                                          .currency
+                                      }
+                                    </Typography>
+                                    <Typography fontWeight={600}>
+                                      {isPromotionEnabled &&
+                                      ecoFly[selectedFlight.cabinType]
+                                        ? Number(
+                                            ecoFly[selectedFlight.cabinType]
+                                              ?.price.amount
+                                          ) * promotionRate
+                                        : ecoFly[selectedFlight.cabinType]
+                                            ?.price.amount}
+                                    </Typography>
+                                  </Stack>
+                                </Stack>
+                                <Box
+                                  sx={{
+                                    border: `1px solid ${palette.text.disabled}`,
+                                    minHeight: '200px',
+                                    borderBottom: 'none',
+                                  }}
+                                >
+                                  {ecoFly[selectedFlight.cabinType]?.rights.map(
+                                    (right) => (
+                                      <Stack
+                                        key={right}
+                                        sx={{
+                                          padding: 2,
+                                          borderBottom: `1px solid ${palette.text.disabled}`,
+                                        }}
+                                      >
+                                        {right}
+                                      </Stack>
+                                    )
+                                  )}
+                                </Box>
+                                <Button
+                                  variant="contained"
+                                  color="secondary"
+                                  size="large"
+                                  sx={{
+                                    borderRadius: 0,
+                                    textTransform: 'capitalize',
+                                  }}
+                                  onClick={() =>
+                                    handleFlightSelect({
+                                      selectedFlight,
+                                      brandCode: ecoFly,
+                                    })
+                                  }
+                                >
+                                  Uçuşu Seç
+                                </Button>
+                              </Stack>
+                              <Stack sx={{ flex: 1 }}>
+                                <Stack
+                                  sx={{
+                                    padding: '16px 8px 24px',
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    backgroundColor: palette.background.default,
+                                  }}
+                                >
+                                  <Typography fontWeight={600}>
+                                    Extra Fly
+                                  </Typography>
+                                  <Stack sx={{ gap: 1, flexDirection: 'row' }}>
+                                    <Typography variant="caption">
+                                      {
+                                        extraFly[selectedFlight.cabinType]
+                                          ?.price.currency
+                                      }
+                                    </Typography>
+                                    <Typography fontWeight={600}>
+                                      {
+                                        extraFly[selectedFlight.cabinType]
+                                          ?.price.amount
+                                      }
+                                    </Typography>
+                                  </Stack>
+                                </Stack>
+                                <Box
+                                  sx={{
+                                    border: `1px solid ${palette.text.disabled}`,
+                                    minHeight: '200px',
+                                    borderBottom: 'none',
+                                  }}
+                                >
+                                  {extraFly[
+                                    selectedFlight.cabinType
+                                  ]?.rights.map((right) => (
+                                    <Stack
+                                      key={right}
+                                      sx={{
+                                        padding: 2,
+                                        borderBottom: `1px solid ${palette.text.disabled}`,
+                                      }}
+                                    >
+                                      {right}
+                                    </Stack>
+                                  ))}
+                                </Box>
+                                <Button
+                                  variant="contained"
+                                  color="secondary"
+                                  size="large"
+                                  sx={{
+                                    borderRadius: 0,
+                                    textTransform: 'capitalize',
+                                  }}
+                                  disabled={isPromotionEnabled}
+                                  onClick={() => {
+                                    handleFlightSelect({
+                                      selectedFlight,
+                                      brandCode: extraFly,
+                                    });
+                                  }}
+                                >
+                                  Uçuşu Seç
+                                </Button>
+                              </Stack>
+                              <Stack sx={{ flex: 1 }}>
+                                <Stack
+                                  sx={{
+                                    padding: '16px 8px 24px',
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    backgroundColor: palette.background.default,
+                                  }}
+                                >
+                                  <Typography fontWeight={600}>
+                                    Prime Fly
+                                  </Typography>
+                                  <Stack sx={{ gap: 1, flexDirection: 'row' }}>
+                                    <Typography variant="caption">
+                                      {
+                                        primeFly[selectedFlight.cabinType]
+                                          ?.price.currency
+                                      }
+                                    </Typography>
+                                    <Typography fontWeight={600}>
+                                      {
+                                        primeFly[selectedFlight.cabinType]
+                                          ?.price.amount
+                                      }
+                                    </Typography>
+                                  </Stack>
+                                </Stack>
+                                <Box
+                                  sx={{
+                                    border: `1px solid ${palette.text.disabled}`,
+                                    minHeight: '200px',
+                                    borderBottom: 'none',
+                                  }}
+                                >
+                                  {primeFly[
+                                    selectedFlight.cabinType
+                                  ]?.rights.map((right) => (
+                                    <Stack
+                                      key={right}
+                                      sx={{
+                                        padding: 2,
+                                        borderBottom: `1px solid ${palette.text.disabled}`,
+                                      }}
+                                    >
+                                      {right}
+                                    </Stack>
+                                  ))}
+                                </Box>
+                                <Button
+                                  variant="contained"
+                                  color="secondary"
+                                  size="large"
+                                  sx={{
+                                    borderRadius: 0,
+                                    textTransform: 'capitalize',
+                                  }}
+                                  disabled={isPromotionEnabled}
+                                  onClick={() => {
+                                    handleFlightSelect({
+                                      selectedFlight,
+                                      brandCode: primeFly,
+                                    });
+                                  }}
+                                >
+                                  Uçuşu Seç
+                                </Button>
+                              </Stack>
+                            </Stack>
+                          )}
+                        </Collapse>
+                      </Fragment>
+                    );
+                  })}
+              </>
+            )}
+          </Stack>
         </Stack>
       </Stack>
-    </Stack>
+    </>
   );
 };
